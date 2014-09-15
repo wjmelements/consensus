@@ -30,7 +30,7 @@ bin/%: %.c | bin
 	$(CC) $(CFLAGS) $^ -o $@
 lib/%.o: src/%.c include/%.h | lib
 	$(CC) $(CFLAGS) -c $< -o $@
-tst/bin/%: tst/%.c lib/%.o include/tst.h | tst/bin
+tst/bin/%: tst/%.c lib/%.o include/tst.h lib/logmap.o | tst/bin
 	$(CC) $(CFLAGS) $(filter-out $(HEADERS),$^) -o $@
 $(MKDIRS):
 	@mkdir -p $@
