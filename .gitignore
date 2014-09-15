@@ -1,3 +1,5 @@
 .pass/
 *.swp
+bin/
 tst/bin/
+lib/

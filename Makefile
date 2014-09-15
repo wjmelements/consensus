@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 CC=gcc
 CFLAGS=-O3 -fdiagnostics-color=always -Iinclude/ -std=gnu11 -pthread
 MKDIRS=lib bin tst/bin .pass
@@ -5,21 +6,24 @@ EXECS=$(addprefix bin/,)
 TESTS=$(addprefix tst/bin/,fetchadd cmpxchg)
 HEADERS=$(wildcard include/*.h)
 
-.PHONY: .default all clean check distcheck
+.PHONY: .default execs tests all clean again check distcheck
+.SECONDARY:
 
 .default: all
+all: execs tests
 	@true
-all: $(EXECS) $(TESTS)
-	@true
+execs: $(EXECS)
+tests: $(TESTS)
 distcheck:
 	@rm -rf .pass
 	@make --no-print-directory check
 clean:
 	rm -rf $(MKDIRS)
+again: clean all
 check: $(addprefix .pass/, $(TESTS))
 	@true
 .pass/%: % | .pass
-	$*
+	@printf "$(@F): " && $* && echo -e "\033[0;32mpass\033[0m" || (echo -e "\033[0;31mfail\033[0m" && false)
 	@mkdir -p $(@D) 
 	@touch $@
 bin/%: %.c | bin
