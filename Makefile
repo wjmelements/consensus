@@ -1,4 +1,5 @@
 SHELL=/bin/bash
+export SHELLOPTS = pipefail
 CC=gcc
 CFLAGS=-O3 -fdiagnostics-color=always -Iinclude/ -std=gnu11 -pthread
 MKDIRS=lib bin tst/bin .pass
@@ -23,7 +24,10 @@ again: clean all
 check: $(addprefix .pass/, $(TESTS))
 	@true
 .pass/%: % | .pass
-	@printf "$(@F): " && $* && echo -e "\033[0;32mpass\033[0m" || (echo -e "\033[0;31mfail\033[0m" && false)
+	@printf "$(@F): ";\
+    /usr/bin/time -p $* 2>&1 | grep real | cut -d " " -f2 | tr -d "\n" \
+    && echo -e " \033[0;32mpass\033[0m"\
+    || (echo -e " \033[0;31mfail\033[0m" && false)
 	@mkdir -p $(@D) 
 	@touch $@
 bin/%: %.c | bin

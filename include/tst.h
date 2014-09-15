@@ -5,13 +5,13 @@
 #include "consensus.h"
 #include "logmap.h"
 
-#define TRIALS 10
+#define TRIALS (0xFFF / CONSENSUS_NUMBER)
 struct consensus_input* args[CONSENSUS_NUMBER];
 void* results[CONSENSUS_NUMBER];
 void logmap_method(size_t i) {
     args[i] = malloc(sizeof(struct consensus_input));
     args[i]->thread_id = i;
-    args[i]->input = malloc(4);
+    args[i]->input = malloc(0);
     results[i] = CONSENSUS_METHOD(args[i]);
 }
 int main() {
