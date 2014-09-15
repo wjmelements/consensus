@@ -7,8 +7,8 @@
 
 #include <stdatomic.h>
 
-void* _fa_arr[2];
-uint16_t _fa_i;
+void* volatile _fa_arr[2];
+volatile uint16_t _fa_i;
 
 void fetch_add_setup(void) {
     _fa_arr[0] = NULL;
