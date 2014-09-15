@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-O3 -fdiagnostics-color=always -Iinclude/ -std=gnu11 -pthread
 MKDIRS=lib bin tst/bin .pass
 EXECS=$(addprefix bin/,)
-TESTS=$(addprefix tst/bin/,fetchadd)
+TESTS=$(addprefix tst/bin/,fetchadd cmpxchg)
 HEADERS=$(wildcard include/*.h)
 
 .PHONY: .default all clean check distcheck

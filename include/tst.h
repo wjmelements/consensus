@@ -5,10 +5,10 @@
 #include "consensus.h"
 
 int main() {
+    CONSENSUS_SETUP;
     pthread_t threads[CONSENSUS_NUMBER];
     struct consensus_input* args[CONSENSUS_NUMBER];
     void* results[CONSENSUS_NUMBER];
-    CONSENSUS_SETUP;
     // TODO logmap this instead
     for (size_t i = 0; i < CONSENSUS_NUMBER; i++) {
         args[i] = malloc(sizeof(struct consensus_input));
