@@ -4,7 +4,7 @@
 struct logmap_arg {
     size_t i; // 1-indexed
     size_t n;
-    void* (*method)(size_t);
+    void (*method)(size_t);
 };
 void* logmap_thread(void* varg) {
     struct logmap_arg* arg = varg;
@@ -31,7 +31,7 @@ void* logmap_thread(void* varg) {
     free(arg);
     return NULL;
 }
-void logmap(size_t n, void* (*method)(size_t)) {
+void logmap(size_t n, void (*method)(size_t)) {
     if (n) {
         struct logmap_arg* arg = malloc(sizeof(struct logmap_arg));
         arg->i = 1;

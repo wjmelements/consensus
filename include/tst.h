@@ -30,6 +30,10 @@ int main() {
             }
         }
         assert(found);
+        for (size_t j = 0 ; j < CONSENSUS_NUMBER; j++) {
+            free(args[j]->input);
+            free(args[j]);
+        }
     }
     return 0;
 }
