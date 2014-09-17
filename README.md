@@ -7,4 +7,6 @@ Currently implemented:
 -----
 - cmpxchg
 - fetchadd
+- queue
+- stack
 - xchg
