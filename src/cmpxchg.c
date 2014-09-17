@@ -7,7 +7,7 @@
 
 #include <stdatomic.h>
 
-void* _cmpxchg_result;
+static void* _cmpxchg_result;
 
 void cmpxchg_setup(void) {
     _cmpxchg_result = NULL;

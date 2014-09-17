@@ -7,19 +7,19 @@
 
 #include <stdatomic.h>
 
-void* volatile _fa_arr[2];
-volatile uint16_t _fa_i;
+static void* volatile _xchg_arr[2];
+static volatile uint16_t _xchg_i;
 
 void xchg_setup(void) {
-    _fa_arr[0] = NULL;
-    _fa_arr[1] = NULL;
-    _fa_i = 0;
+    _xchg_arr[0] = NULL;
+    _xchg_arr[1] = NULL;
+    _xchg_i = 0;
 }
 
 void* xchg_consensus(void* arg) {
     struct consensus_input* input = arg;
     uint16_t thread_id = input->thread_id;
-    _fa_arr[thread_id] = input->input;
-    uint16_t fetch = atomic_exchange(&_fa_i, 1);
-    return _fa_arr[thread_id ^ fetch];
+    _xchg_arr[thread_id] = input->input;
+    uint16_t fetch = atomic_exchange(&_xchg_i, 1);
+    return _xchg_arr[thread_id ^ fetch];
 }
