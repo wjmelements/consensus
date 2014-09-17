@@ -4,7 +4,7 @@ CC=gcc
 CFLAGS=-O3 -fdiagnostics-color=always -Iinclude/ -std=gnu11 -pthread
 MKDIRS=lib bin tst/bin .pass
 EXECS=$(addprefix bin/,)
-TESTS=$(addprefix tst/bin/,fetchadd cmpxchg)
+TESTS=$(addprefix tst/bin/,fetchadd cmpxchg xchg)
 HEADERS=$(wildcard include/*.h)
 
 .PHONY: .default execs tests all clean again check distcheck
