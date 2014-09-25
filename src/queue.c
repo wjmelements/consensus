@@ -4,34 +4,43 @@
 #include <stdatomic.h>
 #include <stdint.h>
 
-static void* _q_arr[2];
+#ifndef NULL
+#define NULL ((void*) 0)
+#endif
 
-#define _q_size 5
-static uint16_t _q_q[_q_size];
-static uint16_t _q_t = 0;
-static uint16_t _q_h = 0;
+// for our particular algorithm, the queue only need have size one
+static void* queues[2];
 
-// being wait-free, undefined behavior occurs if the queue is full for enq
-static void enq(uint16_t data) {
-    // TODO wait-free this
-    _q_q[_q_h++ % _q_size] = data;
+// restriction: queue size is one
+static void enq(uint16_t q_id, void* data) {
+    queues[q_id] = data;
 }
 
-// being wait-free, undefined behavior occurs if the queue is empty for deq
-static uint16_t deq(void) {
-    uint16_t i = atomic_fetch_add(&_q_t, 1);
-    return _q_q[i % _q_size];
+// being wait-free, return NULL when empty
+static void* deq(uint16_t q_id) {
+    return atomic_exchange(&queues[q_id], NULL);
 }
 
 void queue_setup(void) {
-    enq(0);
-    enq(1);
+    // empty both queues
+    deq(0);
+    deq(1);
 }
 
 void* queue_consensus(void* arg) {
     struct consensus_input* input = arg;
     uint16_t id = input->thread_id;
-    _q_arr[id] = input->input;
-    uint16_t i = deq();
-    return _q_arr[id ^ i];
+    uint16_t their_id = id ^ 1;
+    void* mine = input->input;
+    enq(id, mine);
+    void* theirs = deq(their_id);
+    if (theirs) {
+        if (deq(id)) {
+            return theirs;
+        } else {
+            return theirs < mine ? theirs : mine;
+        }
+    } else {
+        return mine;
+    }
 }
