@@ -3,12 +3,21 @@
 #include <stdlib.h>
 
 #include "consensus.h"
-#include "logmap.h"
+
+#define str(X) #X
+#define stringify(x) str(x)
+
+#ifndef map
+#define map linmap
+#endif
+#define map_header map.h
+#include stringify(map_header)
+
 
 #define TRIALS (0xFFF / CONSENSUS_NUMBER)
 struct consensus_input* args[CONSENSUS_NUMBER];
 void* results[CONSENSUS_NUMBER];
-void logmap_method(size_t i) {
+void map_method(size_t i) {
     args[i] = malloc(sizeof(struct consensus_input));
     args[i]->thread_id = i;
     args[i]->input = malloc(0);
@@ -17,7 +26,7 @@ void logmap_method(size_t i) {
 int main() {
     for (size_t i = 0; i < TRIALS; i++) {
         CONSENSUS_SETUP;
-        logmap(CONSENSUS_NUMBER, logmap_method);
+        map(CONSENSUS_NUMBER, map_method);
         for (size_t i = 1; i < CONSENSUS_NUMBER; i++) {
             assert(results[i] == results[i-1]);
         }
