@@ -3,7 +3,7 @@
 
 #include "linmap.h"
 void linmap(size_t n, void(*method)(size_t)) {
-    pthread_t* threads = calloc(n, sizeof(pthread_t));
+    pthread_t* threads = malloc(n * sizeof(pthread_t));
     for (size_t i = 0; i < n; i++) {
         pthread_create(&threads[i], NULL, (void* (*) (void*)) method, (void*) i);
     }

@@ -6,7 +6,7 @@ struct logmap_arg {
     size_t n;
     void (*method)(size_t);
 };
-void* logmap_thread(void* varg) {
+static void* logmap_thread(void* varg) {
     struct logmap_arg* arg = varg;
     const size_t i = arg->i;
     const size_t n = arg->n;

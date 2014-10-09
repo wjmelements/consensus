@@ -16,8 +16,8 @@
 
 #define NUM_SECTIONS 2
 
-long memory[NUM_SECTIONS][0xFFF];
-pthread_mutex_t locks[NUM_SECTIONS];
+static long memory[NUM_SECTIONS][0xFFF];
+static pthread_mutex_t locks[NUM_SECTIONS];
 
 static long read(uint16_t section, uint16_t loc) {
     pthread_mutex_lock(&locks[section]);
