@@ -5,7 +5,7 @@ CFLAGS=-O3 -fdiagnostics-color=always -Iinclude/ -std=gnu11 -pthread
 MKDIRS=lib bin tst/bin .pass
 EXECS=$(addprefix bin/,)
 CASES=cmpxchg fetchadd mtmxchg queue stack xchg
-TESTS=$(addprefix tst/bin/log,$(CASES)) $(addprefix tst/bin/lin,$(CASES)) $(addprefix tst/bin/pool,$(CASES))
+TESTS=$(addprefix tst/bin/seq,$(CASES)) $(addprefix tst/bin/log,$(CASES)) $(addprefix tst/bin/lin,$(CASES)) $(addprefix tst/bin/pool,$(CASES))
 HEADERS=$(wildcard include/*.h)
 
 .PHONY: .default execs tests all clean again check distcheck
@@ -41,5 +41,7 @@ tst/bin/log%: tst/%.c lib/%.o include/tst.h lib/logmap.o | tst/bin
 	$(CC) $(CFLAGS) $(filter-out $(HEADERS),$^) -Dmap=logmap -o $@
 tst/bin/pool%: tst/%.c lib/%.o include/tst.h lib/logmap.o lib/poolmap.o | tst/bin
 	$(CC) $(CFLAGS) $(filter-out $(HEADERS),$^) -Dmap=poolmap -o $@
+tst/bin/seq%: tst/%.c lib/%.o include/tst.h lib/seqmap.o | tst/bin
+	$(CC) $(CFLAGS) $(filter-out $(HEADERS),$^) -Dmap=seqmap -o $@
 $(MKDIRS):
 	@mkdir -p $@
