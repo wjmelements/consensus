@@ -25,10 +25,10 @@ again: clean all
 check: $(addprefix .pass/, $(TESTS))
 	@true
 .pass/%: % | .pass
-	@printf "    |\033[0;33mRUNNING\033[0m| $(@F)\r";\
+	@printf "    |\033[0;33m    \033[0m| $(@F)\r";\
     /usr/bin/time -p $* 2>&1 | grep real | cut -d " " -f2 | tr -d "\n" \
-    && echo -e "|\033[0;32mPASS\033[0m   "\
-    || (echo -e "|\033[0;31mFAIL\033[0m   " && false)
+    && echo -e "|\033[0;32mPASS\033[0m"\
+    || (echo -e "|\033[0;31mFAIL\033[0m" && false)
 	@mkdir -p $(@D)
 	@touch $@
 bin/%: %.c | bin
